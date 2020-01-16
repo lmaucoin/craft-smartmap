@@ -163,18 +163,20 @@ class SmartMapService extends Component
                 break;
         }
 
-        // Fire an 'afterDetectLocation' event
-        $eventLocation = $this->cacheData['visitor'];
-        unset($eventLocation['ip']);
+        // Fire an 'afterDetectLocation' event if cacheData exists
+        if ($this->cacheData) {
+          $eventLocation = $this->cacheData['visitor'];
+          unset($eventLocation['ip']);
 
-        // Trigger event after location detection
-        if (Event::hasHandlers(SmartMap::class, SmartMap::EVENT_AFTER_DETECT_LOCATION)) {
-            Event::trigger(SmartMap::class, SmartMap::EVENT_AFTER_DETECT_LOCATION, new DetectLocationEvent([
-                'ip'               => $this->cacheData['visitor']['ip'],
-                'location'         => $eventLocation,
-                'detectionService' => $this->cacheData['service'],
-                'cacheExpires'     => $this->cacheData['expires'],
-            ]));
+          // Trigger event after location detection
+          if (Event::hasHandlers(SmartMap::class, SmartMap::EVENT_AFTER_DETECT_LOCATION)) {
+              Event::trigger(SmartMap::class, SmartMap::EVENT_AFTER_DETECT_LOCATION, new DetectLocationEvent([
+                  'ip'               => $this->cacheData['visitor']['ip'],
+                  'location'         => $eventLocation,
+                  'detectionService' => $this->cacheData['service'],
+                  'cacheExpires'     => $this->cacheData['expires'],
+              ]));
+          }
         }
     }
 
