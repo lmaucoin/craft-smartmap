@@ -193,7 +193,7 @@ class Variables extends Component
         $center = SmartMap::$plugin->smartMap->defaultCoords();
 
         // If multiple locations
-        if (!empty($locations) && array_key_exists(0, $locations)) {
+        if (!empty($locations) && isset($locations[0])) {
 
             $allLats = [];
             $allLngs = [];
